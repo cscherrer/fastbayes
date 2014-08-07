@@ -36,12 +36,6 @@ import qualified Data.Vector.Storable as V
 import Numeric.LinearAlgebra
 
 
-square :: Double -> Double
-square x = x * x
-
-normSq :: Vector Double -> Double
-normSq x = x <.> x
-
 data Fit = Fit
   { design                 :: Matrix Double
   , response               :: Vector Double
@@ -101,4 +95,8 @@ marginalLikelihood lim x y = Fit x y α β γ logEv m h
 
   (α, β) = lim $ go α0 β0
 
+square :: Double → Double
+square x = x * x
 
+normSq :: Vector Double → Double
+normSq x = x <.> x
