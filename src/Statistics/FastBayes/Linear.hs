@@ -35,8 +35,6 @@ module Statistics.FastBayes.Linear
 import qualified Data.Vector.Storable as V
 import Numeric.LinearAlgebra
 
---α0 :: Double
---α0 = 1.0
 
 square :: Double -> Double
 square x = x * x
