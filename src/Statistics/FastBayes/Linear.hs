@@ -37,14 +37,14 @@ import Numeric.LinearAlgebra
 
 
 data Fit = Fit
-  { design                 :: Matrix Double
-  , response               :: Vector Double
-  , priorPrecision         :: Double
-  , noisePrecision         :: Double
-  , numEffectiveParameters :: Double
-  , logEvidence            :: Double
-  , mapWeights             :: Vector Double
-  , hessian                :: Matrix Double
+  { design                 :: Matrix Double -- ^The design matrix used for the fit. 
+  , response               :: Vector Double -- ^The response vector used for the fit
+  , priorPrecision         :: Double        -- ^The precision (inverse variance) of the prior distribution, determined by maximizing the marginal likelihood
+  , noisePrecision         :: Double        -- ^The precision (inverse variance) of the noise
+  , numEffectiveParameters :: Double        -- ^The number of effective parameters in the model
+  , logEvidence            :: Double        -- ^The log of the evidence, which is useful for model comparison (different features, same response)
+  , mapWeights             :: Vector Double -- ^The MAP (maximum a posteriori) values for the paramter weights
+  , hessian                :: Matrix Double -- ^The Hessian (matrix of second derivatives) for the posterior distribution
   }
   deriving Show
 
