@@ -6,7 +6,7 @@ name:                fastbayes
 version:             0.1.0.0
 
 -- A short (one-line) description of the package.
-synopsis:            Bayesian modeling routines that are fast(er than general-purpose sampling)
+synopsis:            Bayesian modeling algorithms accelerated for particular model structures
 
 -- A longer description of the package.
 -- description:         
