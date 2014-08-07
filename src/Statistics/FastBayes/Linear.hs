@@ -1,6 +1,23 @@
 {-# LANGUAGE UnicodeSyntax #-}
 {-# LANGUAGE BangPatterns #-}
 
+{-|
+Module      : Statistics.FastBayes.Linear
+Description : Bayesian linear regression via maximum marginal likelihood.
+Copyright   : (c) Melinae, 2014
+                  Chad Scherrer, 2014
+License     : MIT
+Maintainer  : chad.scherrer@gmail.com
+Stability   : experimental
+Portability : POSIX
+
+This module gives an implementation of Bayesian linear regression, with the scale of the prior chosen by marginal likelihood.
+
+The inputs for a Bayesian linear model are identical to those of a classical linear model, except that in addition to a design matrix and response, we must also specify a prior distribution on the weights and the noise. This leaves us with an open question of how these should be specified.
+
+In his book /Pattern Recognition and Machine Learning/, Christopher Bishop provides details for an approach that simplifies the situation significantly, and allows for much faster inference. The structure of the linear model allows us to integrate the posterior over the weights, resulting in the /marginal likelihood/, expressed as a function of the prior precision and noise precision. This, in turn, can be easily optimized.
+-}
+
 module Statistics.FastBayes.Linear 
   ( Fit
   , marginalLikelihood
