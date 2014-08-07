@@ -20,7 +20,7 @@ In his book /Pattern Recognition and Machine Learning/, Christopher Bishop provi
 
 module Statistics.FastBayes.Linear 
   ( Fit
-  , marginalLikelihood
+  , fit
   , design
   , response
   , priorPrecision        
@@ -48,13 +48,13 @@ data Fit = Fit
   }
   deriving Show
 
-
-marginalLikelihood :: 
-  ([(Double, Double)] → (Double, Double))   -- How to take the limit of the (α,β) sequence
-  → Matrix Double                           -- design matrix (features in columns)
-  → Vector Double                           -- response vector
+-- |@fit lim x y@ fits a Bayesian linear model to a design matrix @x@ and response vector @y@. This is an iterative algorithm, resulting in a sequence (list) of (α,β) values. Here α is the prior precision, and β is the noise precision. The @lim@ function passed in is used to specify how the limit of this sequence should be computed.
+fit :: 
+  ([(Double, Double)] → (Double, Double))   -- ^How to take the limit of the (α,β) sequence. A simple approach is, /e.g./, @fit (!! 1000) x y@
+  → Matrix Double                           -- ^The design matrix (each column is a feature)
+  → Vector Double                           -- ^The response vector
   → Fit
-marginalLikelihood lim x y = Fit x y α β γ logEv m h
+fit lim x y = Fit x y α β γ logEv m h
   where
   n = rows x
   p = cols x
