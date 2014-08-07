@@ -21,8 +21,6 @@ In his book /Pattern Recognition and Machine Learning/, Christopher Bishop provi
 module Statistics.FastBayes.Linear 
   ( Fit
   , marginalLikelihood
-  , fit1
-  , fit2
   , design
   , response
   , priorPrecision        
@@ -105,17 +103,4 @@ marginalLikelihood lim x y = Fit x y α β γ logEv m h
 
   (α, β) = lim $ go α0 β0
 
-x1 :: Matrix Double
-x1 = gaussianSample 3 1000 (V.fromList $ replicate 100 0) (ident 100)
 
-x2 :: Matrix Double
-x2 = trans $ (100 >< 1000) [1.0 ..]
-
-y1 :: Vector Double
-y1 = V.fromList [1.0 .. 1000.0]
-
-fit1 :: Fit
-fit1 = marginalLikelihood (!! 100) x1 y1
-
-fit2 :: Fit
-fit2 = marginalLikelihood (!! 100) x2 y1
