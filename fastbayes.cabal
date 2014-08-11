@@ -12,7 +12,7 @@ synopsis:            Bayesian modeling algorithms accelerated for particular mod
 description:         General-purpose sampling approaches like Gibbs sampling are very useful for models that have not been studied extensively. But for some cases, specialized algorithms are available because of the model's commonality (/e.g./, linear regression) or niche popularity (/e.g./, Latent Dirichlet Allocation). This package is an effort to collect such algorithms in one place.
 
 -- URL for the project homepage or repository.
--- homepage:           
+homepage:            https://github.com/cscherrer/fastbayes
 
 license:             MIT
 license-file:        LICENSE
