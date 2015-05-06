@@ -37,16 +37,15 @@ import qualified Data.Vector.Storable as V
 -- import Data.Packed.Matrix (fromRows)
 import Numeric.LinearAlgebra
 
-
-data Fit = Fit
-  { design                 :: Matrix Double -- ^The design matrix used for the fit. 
-  , response               :: Vector Double -- ^The response vector used for the fit
-  , priorPrecision         :: Double        -- ^The precision (inverse variance) of the prior distribution, determined by maximizing the marginal likelihood
-  , noisePrecision         :: Double        -- ^The precision (inverse variance) of the noise
-  , effectiveNumParameters :: Double        -- ^The effective number of parameters in the model
-  , logEvidence            :: Double        -- ^The log of the evidence, which is useful for model comparison (different features, same response)
-  , mapWeights             :: Vector Double -- ^The MAP (maximum a posteriori) values for the parameter weights
-  , hessian                :: Matrix Double -- ^The Hessian (matrix of second derivatives) for the posterior distribution
+data Fit a = Fit
+  { priorPrecision         :: Double             -- ^The precision (inverse variance) of the prior distribution, determined by maximizing the marginal likelihood
+  , noisePrecision         :: Double             -- ^The precision (inverse variance) of the noise
+  , effectiveNumParameters :: Double             -- ^The effective number of parameters in the model
+  , logEvidence            :: Double             -- ^The log of the evidence, which is useful for model comparison (different features, same response)
+  , mapWeights             :: Vector Double      -- ^The MAP (maximum a posteriori) values for the parameter weights
+  , intercept              :: Double             -- ^The y-intercept
+  , hessian                :: Matrix Double      -- ^The Hessian (matrix of second derivatives) for the posterior distribution
+  , features               :: a → Vector Double  -- ^Extract features from a data point
   }
   deriving Show
 
