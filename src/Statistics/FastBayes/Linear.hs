@@ -34,6 +34,7 @@ module Statistics.FastBayes.Linear
   where
 
 import qualified Data.Vector.Storable as V
+-- import Data.Packed.Matrix (fromRows)
 import Numeric.LinearAlgebra
 
 
