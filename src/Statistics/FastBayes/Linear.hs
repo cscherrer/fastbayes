@@ -48,14 +48,22 @@ data Fit a = Fit
   , features               :: a → Vector Double  -- ^Extract features from a data point
   }
 
--- |@fit lim x y@ fits a Bayesian linear model to a design matrix @x@ and response vector @y@. This is an iterative algorithm, resulting in a sequence (list) of (α,β) values. Here α is the prior precision, and β is the noise precision. The @lim@ function passed in is used to specify how the limit of this sequence should be computed.
-fit :: 
-  ([(Double, Double)] → (Double, Double))   -- ^How to take the limit of the (α,β) sequence. A simple approach is, /e.g./, @fit (!! 1000) x y@
-  → Matrix Double                           -- ^The design matrix (each column is a feature)
-  → Vector Double                           -- ^The response vector
-  → Fit
-fit lim x y = Fit x y α β γ logEv m h
+-- instance Show (Fit a) where
+
+-- |@fit0 lim x y@ fits a Bayesian linear model to a design matrix @x@ and response vector @y@. This is an iterative algorithm, resulting in a sequence (list) of (α,β) values. Here α is the prior precision, and β is the noise precision. The @lim@ function passed in is used to specify how the limit of this sequence should be computed.
+fit0 :: 
+  ([(Double, Double)] → (Double, Double)) -- ^How to take the limit of the (α,β) sequence. A simple approach is, /e.g./, @fit (!! 1000) x y@
+  → Bool                                  -- ^Whether to studentize (translate and re-scale) the features
+  → (a → Vector Double)                   -- ^The features
+  → [a]                                   -- ^The input data
+  → Vector Double                         -- ^The response vector
+  → Fit a
+fit0 lim student f xs y = Fit α β γ logEv m 0 h f'
   where
+  (x, f') | not student = (fromRows $ map f xs,      f)
+          | student     = (                 x0, fs . f)
+            where
+            (x0, fs) = studentizeM x
   n = rows x
   p = cols x
   α0 = 1.0
