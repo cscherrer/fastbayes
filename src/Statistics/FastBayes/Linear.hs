@@ -100,3 +100,25 @@ square x = x * x
 
 normSq :: Vector Double → Double
 normSq x = x <.> x
+
+mean :: Vector Double -> Double
+mean v = V.sum v / fromIntegral (V.length v)
+
+studentizeM :: Matrix Double -> (Matrix Double, Vector Double → Vector Double)
+studentizeM m = (x, f)
+  where
+  (xs, fs) = unzip . map studentize . toColumns $ m
+  x = fromColumns xs
+  f = fromList . zipWith ($) fs . toList
+
+studentize :: Vector Double -> (Vector Double, Double → Double)
+studentize v = (scale (1/σ) v0, f)
+  where
+  n   = V.length v
+  μ   = mean v
+  v0  = v - konst μ n
+  σ   = normSq v0 / fromIntegral n
+  f x = (x - μ) / σ
+
+x = [1,0.1..pi]
+y = map sin x
