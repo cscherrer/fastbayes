@@ -20,15 +20,16 @@ In his book /Pattern Recognition and Machine Learning/, Christopher Bishop provi
 
 module Statistics.FastBayes.Linear 
   ( Fit
-  , fit
-  , design
-  , response
+  , fit0
+  , fit1
   , priorPrecision        
   , noisePrecision        
   , effectiveNumParameters
   , logEvidence           
   , mapWeights            
-  , hessian
+  , intercept             
+  , hessian               
+  , features
   )
   where
 
