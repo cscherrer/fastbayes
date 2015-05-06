@@ -103,6 +103,20 @@ fit0 lim student f xs y = Fit α β γ logEv m 0 h f'
 
   (α, β) = lim $ go α0 β0
 
+fit1 :: 
+  ([(Double, Double)] → (Double, Double)) -- ^How to take the limit of the (α,β) sequence. A simple approach is, /e.g./, @fit (!! 1000) x y@
+  → Bool                                  -- ^Whether to studentize (translate and re-scale) the features
+  → (a → Vector Double)                   -- ^The features
+  → [a]                                   -- ^The input data
+  → Vector Double                         -- ^The response vector
+  → Fit a
+fit1 lim student f xs y = f0 {intercept = μ}
+  where
+  μ = mean y
+  n = V.length y
+  f0 = fit0 lim student f xs (y - konst μ n)
+
+
 square :: Double → Double
 square x = x * x
 
