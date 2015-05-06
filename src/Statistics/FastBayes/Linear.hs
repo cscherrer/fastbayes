@@ -47,7 +47,6 @@ data Fit a = Fit
   , hessian                :: Matrix Double      -- ^The Hessian (matrix of second derivatives) for the posterior distribution
   , features               :: a → Vector Double  -- ^Extract features from a data point
   }
-  deriving Show
 
 -- |@fit lim x y@ fits a Bayesian linear model to a design matrix @x@ and response vector @y@. This is an iterative algorithm, resulting in a sequence (list) of (α,β) values. Here α is the prior precision, and β is the noise precision. The @lim@ function passed in is used to specify how the limit of this sequence should be computed.
 fit :: 
