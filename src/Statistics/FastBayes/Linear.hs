@@ -19,7 +19,8 @@ In his book /Pattern Recognition and Machine Learning/, Christopher Bishop provi
 -}
 
 module Statistics.FastBayes.Linear 
-  ( Fit
+  ( test
+  , Fit
   , fit0
   , fit1
   , priorPrecision        
@@ -30,11 +31,18 @@ module Statistics.FastBayes.Linear
   , intercept             
   , hessian               
   , features
+  , Predict
+  , predict
+  , studentize
+  , studentizeM
+  , inputs
+  , fitted
+  , fittedSD
   )
   where
 
 import qualified Data.Vector.Storable as V
--- import Data.Packed.Matrix (fromRows)
+import Data.Packed.Matrix
 import Numeric.LinearAlgebra
 
 data Fit a = Fit
@@ -63,7 +71,7 @@ fit0 lim student f xs y = Fit α β γ logEv m 0 h f'
   (x, f') | not student = (fromRows $ map f xs,      f)
           | student     = (                 x0, fs . f)
             where
-            (x0, fs) = studentizeM x
+            (x0, fs) = studentizeM . fromRows . map f $ xs
   n = rows x
   p = cols x
   α0 = 1.0
@@ -139,8 +147,33 @@ studentize v = (scale (1/σ) v0, f)
   n   = V.length v
   μ   = mean v
   v0  = v - konst μ n
-  σ   = normSq v0 / fromIntegral n
+  σ   = sqrt $ normSq v0 / fromIntegral n
   f x = (x - μ) / σ
 
-x = [1,0.1..pi]
-y = map sin x
+test = myFit 11
+  where
+  x = [1,1.1..pi] 
+  y = fromList $ map sin x
+  f n x = fromList . map (x **) $ [1..n]
+  myFit n = fit1 (!!100) True (f n) x y
+
+data Predict a = Predict
+  { inputs          :: [a]
+  , fitted          :: [Double]
+  , fittedSD        :: [Double]
+  }
+
+predict :: Fit a -> [a] -> Predict a
+predict myFit xs = Predict xs ys (toList . V.map sqrt $ konst (1/β) n + takeDiag cov)
+  where
+  n = rows x
+  α  = priorPrecision myFit   
+  β  = noisePrecision myFit       
+  w  = mapWeights     myFit       
+  y0 = intercept      myFit       
+  h  = hessian        myFit       
+  f  = features       myFit       
+  x  = fromRows $ map f xs
+  cov = x <> (h <\> trans x)
+  y = x <> w + konst y0 n
+  ys = toList y
